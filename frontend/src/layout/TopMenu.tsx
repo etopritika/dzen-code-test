@@ -1,5 +1,5 @@
 const TopMenu = () => {
-  return <div>TopMenu placeholder</div>;
+  return <header className="p-3 border-bottom">TopMenu placeholder</header>;
 };
 
 export default TopMenu;
