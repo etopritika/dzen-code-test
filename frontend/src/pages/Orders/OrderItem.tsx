@@ -36,8 +36,18 @@ const OrderItem = ({ order, onSelect, onDelete }: OrderItemProps) => {
         <div>
           <h5 className="card-title">{order.title}</h5>
           <p className="card-text text-muted mb-2">{productCount} products</p>
-          <p className="card-text small text-muted mb-1">{shortDate}</p>
-          <p className="card-text small text-muted mb-1">{fullDate}</p>
+          <time
+            className="card-text small text-muted mb-1 d-block"
+            dateTime={order.date}
+          >
+            {shortDate}
+          </time>
+          <time
+            className="card-text small text-muted mb-1 d-block"
+            dateTime={order.date}
+          >
+            {fullDate}
+          </time>
           <p className="card-text small text-muted">
             {sumUSD} USD / {sumUAH} UAH
           </p>
