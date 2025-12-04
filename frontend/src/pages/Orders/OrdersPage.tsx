@@ -21,7 +21,7 @@ const OrdersPage = () => {
 
   return (
     <section className="mt-4 mb-4">
-      <h2 className="mb-4">Orders / 25</h2>
+      <h2 className="mb-4">Orders / {orders.length}</h2>
       <div className="row">
         <div className="col-6">
           {loading && <p>Loading...</p>}
