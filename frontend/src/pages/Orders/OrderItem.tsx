@@ -1,12 +1,19 @@
-import type { Order } from "./OrdersPage";
+import type { Order } from "@/store/ordersSlice";
+import { getProductsCount, getSumUSD, getSumUAH } from "@/utils/orderHelpers";
+import { formatShortDate, formatFullDate } from "@/utils/formatDate";
 
 interface OrderItemProps {
   order: Order;
   onSelect: (order: Order) => void;
+  onDelete: (order: Order) => void;
 }
 
-const OrderItem = ({ order, onSelect }: OrderItemProps) => {
-  const productCount = order.products.length;
+const OrderItem = ({ order, onSelect, onDelete }: OrderItemProps) => {
+  const productCount = getProductsCount(order);
+  const sumUSD = getSumUSD(order);
+  const sumUAH = getSumUAH(order);
+  const shortDate = formatShortDate(order.date);
+  const fullDate = formatFullDate(order.date);
 
   const handleClick = () => {
     onSelect(order);
@@ -29,13 +36,21 @@ const OrderItem = ({ order, onSelect }: OrderItemProps) => {
         <div>
           <h5 className="card-title">{order.title}</h5>
           <p className="card-text text-muted mb-2">{productCount} products</p>
-          <p className="card-text small text-muted mb-1">Date: {order.date}</p>
+          <p className="card-text small text-muted mb-1">{shortDate}</p>
+          <p className="card-text small text-muted mb-1">{fullDate}</p>
           <p className="card-text small text-muted">
-            Formatted date placeholder
+            {sumUSD} USD / {sumUAH} UAH
           </p>
         </div>
         <div className="ms-3">
-          <button type="button" className="btn btn-link text-danger p-0">
+          <button
+            type="button"
+            className="btn btn-link text-danger p-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(order);
+            }}
+          >
             <i className="bi bi-trash"></i>
           </button>
         </div>

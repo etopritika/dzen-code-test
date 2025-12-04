@@ -1,40 +1,37 @@
-const DeletePopup = () => {
+import type { Order } from "@/store/ordersSlice";
+
+interface DeletePopupProps {
+  order: Order;
+  onCancel: () => void;
+  onConfirm: () => void;
+}
+
+const DeletePopup = ({ order, onCancel, onConfirm }: DeletePopupProps) => {
   return (
     <div
-      className="modal fade"
-      id="deleteModal"
-      tabIndex={-1}
-      aria-labelledby="deleteModalLabel"
-      aria-hidden="true"
+      className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
+      onClick={onCancel}
     >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="deleteModalLabel">
-              Delete Order
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div className="modal-body">
-            <p>Delete this order?</p>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="button" className="btn btn-danger">
-              Yes
-            </button>
-          </div>
+      <div
+        className="bg-white rounded p-4"
+        style={{ minWidth: "400px" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h5 className="mb-3">Delete order?</h5>
+        <p className="mb-4">
+          Are you sure you want to delete "<strong>{order.title}</strong>"?
+        </p>
+        <div className="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button type="button" className="btn btn-danger" onClick={onConfirm}>
+            Delete
+          </button>
         </div>
       </div>
     </div>
