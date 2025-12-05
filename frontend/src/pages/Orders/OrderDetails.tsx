@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { Order } from "@/store/ordersSlice";
 import ProductRow from "./ProductRow";
+import AddProductForm from "./AddProductForm";
 
 interface OrderDetailsProps {
   order: Order | null;
@@ -7,6 +9,7 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
+  const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   if (!order) {
     return (
       <aside className="border-start p-4">
@@ -31,13 +34,22 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         </button>
       </div>
 
-      <button className="btn btn-light border mb-3">+ Add product</button>
+      <button
+        className="btn btn-light border mb-3"
+        onClick={() => setIsAddProductOpen(true)}
+      >
+        + Add product
+      </button>
 
       <div>
         {order.products.map((p) => (
           <ProductRow key={p.id} product={p} />
         ))}
       </div>
+
+      {isAddProductOpen && (
+        <AddProductForm onClose={() => setIsAddProductOpen(false)} />
+      )}
     </aside>
   );
 };
