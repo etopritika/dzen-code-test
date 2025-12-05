@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { Order } from "@/store/ordersSlice";
 import ProductRow from "./ProductRow";
 import AddProductForm from "./AddProductForm";
@@ -9,6 +10,7 @@ interface OrderDetailsProps {
 }
 
 const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
+  const { t } = useTranslation();
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   if (!order) {
     return (
@@ -38,7 +40,7 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         className="btn btn-light border mb-3"
         onClick={() => setIsAddProductOpen(true)}
       >
-        + Add product
+        + {t("buttons.addProduct")}
       </button>
 
       <div>

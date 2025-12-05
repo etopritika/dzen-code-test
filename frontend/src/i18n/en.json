@@ -1,0 +1,36 @@
+{
+  "topmenu": {
+    "sessions": "Active sessions",
+    "time": "Time",
+    "language": "Language"
+  },
+  "orders": {
+    "title": "Orders"
+  },
+  "products": {
+    "title": "Products"
+  },
+  "buttons": {
+    "addProduct": "Add product",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "save": "Save"
+  },
+  "deletePopup": {
+    "title": "Delete order?",
+    "message": "Are you sure you want to delete"
+  },
+  "addProductForm": {
+    "title": "Add Product",
+    "fields": {
+      "title": "Title",
+      "type": "Type",
+      "priceUSD": "Price (USD)"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "typeRequired": "Type is required",
+      "pricePositive": "USD price must be positive"
+    }
+  }
+}

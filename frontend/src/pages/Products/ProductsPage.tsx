@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchProducts } from "@/store/productsSlice";
 import { fetchOrders } from "@/store/ordersSlice";
@@ -6,6 +7,7 @@ import { useProductsFilter } from "@/hooks/useProductsFilter";
 import ProductList from "./ProductList";
 
 const ProductsPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     list: products,
@@ -27,7 +29,7 @@ const ProductsPage = () => {
   if (loading) {
     return (
       <section className="mt-4 mb-4">
-        <h2 className="mb-4">Products</h2>
+        <h2 className="mb-4">{t("products.title")}</h2>
         <p>Loading...</p>
       </section>
     );
@@ -36,7 +38,7 @@ const ProductsPage = () => {
   if (error) {
     return (
       <section className="mt-4 mb-4">
-        <h2 className="mb-4">Products</h2>
+        <h2 className="mb-4">{t("products.title")}</h2>
         <p className="text-danger">{error}</p>
       </section>
     );
@@ -44,7 +46,9 @@ const ProductsPage = () => {
 
   return (
     <section className="mt-4 mb-4">
-      <h2 className="mb-4">Products</h2>
+      <h2 className="mb-4">
+        {t("products.title")} / {products.length}
+      </h2>
       <div className="mb-4">
         <select
           className="form-select"

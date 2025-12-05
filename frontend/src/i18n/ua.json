@@ -1,0 +1,36 @@
+{
+  "topmenu": {
+    "sessions": "Активні сесії",
+    "time": "Час",
+    "language": "Мова"
+  },
+  "orders": {
+    "title": "Приходи"
+  },
+  "products": {
+    "title": "Продукти"
+  },
+  "buttons": {
+    "addProduct": "Додати продукт",
+    "cancel": "Скасувати",
+    "delete": "Видалити",
+    "save": "Зберегти"
+  },
+  "deletePopup": {
+    "title": "Видалити замовлення?",
+    "message": "Ви впевнені, що хочете видалити"
+  },
+  "addProductForm": {
+    "title": "Додати продукт",
+    "fields": {
+      "title": "Назва",
+      "type": "Тип",
+      "priceUSD": "Ціна (USD)"
+    },
+    "validation": {
+      "titleRequired": "Назва обов'язкова",
+      "typeRequired": "Тип обов'язковий",
+      "pricePositive": "Ціна USD повинна бути додатною"
+    }
+  }
+}

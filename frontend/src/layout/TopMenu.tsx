@@ -1,10 +1,17 @@
+import { useTranslation } from "react-i18next";
 import { formatFullDate } from "@/utils/formatDate";
 import { useLiveClock } from "@/hooks/useLiveClock";
 import { useActiveSessions } from "@/hooks/useActiveSessions";
 
 const TopMenu = () => {
+  const { t, i18n } = useTranslation();
   const currentTime = useLiveClock();
   const activeSessions = useActiveSessions();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "ua" : "en";
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <header className="p-3 border-bottom">
@@ -12,7 +19,17 @@ const TopMenu = () => {
         <time dateTime={currentTime.toISOString()}>
           {formatFullDate(currentTime)} {currentTime.toLocaleTimeString()}
         </time>
-        <span>Active sessions: {activeSessions}</span>
+        <span>
+          {t("topmenu.sessions")}: {activeSessions}
+        </span>
+        <button
+          type="button"
+          className="btn btn-outline-secondary btn-sm"
+          onClick={toggleLanguage}
+          title={t("topmenu.language")}
+        >
+          {i18n.language.toUpperCase()}
+        </button>
       </div>
     </header>
   );
