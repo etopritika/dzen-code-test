@@ -37,5 +37,8 @@
     "title": "Reports",
     "usd_chart": "Sum of orders in USD",
     "uah_chart": "Sum of orders in UAH"
+  },
+  "map": {
+    "title": "Map"
   }
 }

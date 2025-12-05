@@ -18,6 +18,9 @@ const Navigation = () => {
       <NavLink to="/reports" className="nav-link">
         {t("reports.title")}
       </NavLink>
+      <NavLink to="/map" className="nav-link">
+        {t("map.title")}
+      </NavLink>
     </nav>
   );
 };
