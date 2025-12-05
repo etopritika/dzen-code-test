@@ -1,7 +1,9 @@
+import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "@/layout/Layout";
-import OrdersPage from "@/pages/Orders/OrdersPage";
-import ProductsPage from "@/pages/Products/ProductsPage";
+
+const OrdersPage = lazy(() => import("@/pages/Orders/OrdersPage"));
+const ProductsPage = lazy(() => import("@/pages/Products/ProductsPage"));
 
 export const router = createBrowserRouter([
   {
