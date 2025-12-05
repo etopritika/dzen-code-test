@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import type { Order } from "@/store/ordersSlice";
 
 interface DeletePopupProps {
@@ -7,13 +8,14 @@ interface DeletePopupProps {
 }
 
 const DeletePopup = ({ order, onCancel, onConfirm }: DeletePopupProps) => {
-  return (
+  return createPortal(
     <div
       className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
+      style={{ zIndex: 1050 }}
       onClick={onCancel}
     >
       <div
-        className="bg-white rounded p-4"
+        className="bg-white rounded p-4 animate__animated animate__fadeInDown"
         style={{ minWidth: "400px" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -34,7 +36,8 @@ const DeletePopup = ({ order, onCancel, onConfirm }: DeletePopupProps) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
