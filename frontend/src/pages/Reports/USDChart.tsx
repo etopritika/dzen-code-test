@@ -1,7 +1,8 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import type { Order } from "@/store/ordersSlice";
-import { getSumUSD } from "@/utils/orderHelpers";
+import { buildUSDChartData } from "@/utils/charts";
 
 interface USDChartProps {
   orders: Order[];
@@ -10,14 +11,7 @@ interface USDChartProps {
 const USDChart = ({ orders }: USDChartProps) => {
   const { t } = useTranslation();
 
-  const usdData = orders.map((o) => {
-    const filteredProducts = o.products.filter((p) => p.order === o.id);
-    const orderWithFilteredProducts = { ...o, products: filteredProducts };
-    return {
-      name: o.title,
-      usd: getSumUSD(orderWithFilteredProducts),
-    };
-  });
+  const usdData = useMemo(() => buildUSDChartData(orders), [orders]);
 
   return (
     <div className="mb-5">
@@ -34,4 +28,3 @@ const USDChart = ({ orders }: USDChartProps) => {
 };
 
 export default USDChart;
-
