@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   LineChart,
@@ -18,14 +19,23 @@ interface UAHChartProps {
 const UAHChart = ({ orders }: UAHChartProps) => {
   const { t } = useTranslation();
 
-  const uahData = orders.map((o) => {
-    const filteredProducts = o.products.filter((p) => p.order === o.id);
-    const orderWithFilteredProducts = { ...o, products: filteredProducts };
-    return {
-      date: formatShortDate(o.date),
-      uah: getSumUAH(orderWithFilteredProducts),
-    };
-  });
+  const uahData = useMemo(() => {
+    const map = new Map<string, number>();
+
+    orders.forEach((o) => {
+      const filteredProducts = o.products.filter((p) => p.order === o.id);
+      const orderWithFilteredProducts = { ...o, products: filteredProducts };
+      const date = formatShortDate(o.date);
+      const sum = getSumUAH(orderWithFilteredProducts);
+
+      map.set(date, (map.get(date) ?? 0) + sum);
+    });
+
+    return Array.from(map.entries()).map(([date, uah]) => ({
+      date,
+      uah,
+    }));
+  }, [orders]);
 
   return (
     <div className="mb-5">
