@@ -15,6 +15,9 @@ const Navigation = () => {
       <NavLink to="/products" className="nav-link">
         {t("products.title")}
       </NavLink>
+      <NavLink to="/reports" className="nav-link">
+        {t("reports.title")}
+      </NavLink>
     </nav>
   );
 };

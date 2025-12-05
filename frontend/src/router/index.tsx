@@ -4,6 +4,7 @@ import Layout from "@/layout/Layout";
 
 const OrdersPage = lazy(() => import("@/pages/Orders/OrdersPage"));
 const ProductsPage = lazy(() => import("@/pages/Products/ProductsPage"));
+const ReportsPage = lazy(() => import("@/pages/Reports/ReportsPage"));
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "products",
         element: <ProductsPage />,
+      },
+      {
+        path: "reports",
+        element: <ReportsPage />,
       },
     ],
   },

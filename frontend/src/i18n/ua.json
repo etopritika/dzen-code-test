@@ -32,5 +32,10 @@
       "typeRequired": "Тип обов'язковий",
       "pricePositive": "Ціна USD повинна бути додатною"
     }
+  },
+  "reports": {
+    "title": "Звіти",
+    "usd_chart": "Сума приходів у USD",
+    "uah_chart": "Сума приходів у UAH"
   }
 }
