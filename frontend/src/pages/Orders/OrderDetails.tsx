@@ -16,7 +16,10 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
   }
 
   return (
-    <aside className="border-start p-4" style={{ minHeight: "100vh" }}>
+    <aside
+      className="border-start p-4 animate__animated animate__fadeInRight"
+      style={{ minHeight: "100vh" }}
+    >
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="mb-0">{order.title}</h4>
         <button

@@ -7,11 +7,13 @@ const TopMenu = () => {
   const activeSessions = useActiveSessions();
 
   return (
-    <header className="p-3 border-bottom d-flex justify-content-end gap-3">
-      <time dateTime={currentTime.toISOString()}>
-        {formatFullDate(currentTime)} {currentTime.toLocaleTimeString()}
-      </time>
-      <span>Active sessions: {activeSessions}</span>
+    <header className="p-3 border-bottom">
+      <div className="container d-flex justify-content-end align-items-center gap-3">
+        <time dateTime={currentTime.toISOString()}>
+          {formatFullDate(currentTime)} {currentTime.toLocaleTimeString()}
+        </time>
+        <span>Active sessions: {activeSessions}</span>
+      </div>
     </header>
   );
 };

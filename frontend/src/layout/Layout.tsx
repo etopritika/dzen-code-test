@@ -1,18 +1,24 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import TopMenu from "@/layout/TopMenu";
 
 const Layout = () => {
+  const location = useLocation();
   return (
-    <div className="container-fluid p-0">
+    <div className="p-0">
       <TopMenu />
-      <div className="row g-0">
+      <div className="row g-0 container mx-auto">
         <aside className="col-2">
           <Navigation />
         </aside>
         <div className="col">
           <main className="p-4">
-            <Outlet />
+            <div
+              key={location.pathname}
+              className="animate__animated animate__fadeInRight"
+            >
+              <Outlet />
+            </div>
           </main>
         </div>
       </div>

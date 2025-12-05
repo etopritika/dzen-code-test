@@ -1,4 +1,5 @@
 import type { Order } from "@/store/ordersSlice";
+import ModalWrapper from "@/components/ModalWrapper";
 
 interface DeletePopupProps {
   order: Order;
@@ -8,15 +9,8 @@ interface DeletePopupProps {
 
 const DeletePopup = ({ order, onCancel, onConfirm }: DeletePopupProps) => {
   return (
-    <div
-      className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
-      onClick={onCancel}
-    >
-      <div
-        className="bg-white rounded p-4"
-        style={{ minWidth: "400px" }}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalWrapper onClose={onCancel}>
+      <div style={{ minWidth: "400px" }}>
         <h5 className="mb-3">Delete order?</h5>
         <p className="mb-4">
           Are you sure you want to delete "<strong>{order.title}</strong>"?
@@ -34,7 +28,7 @@ const DeletePopup = ({ order, onCancel, onConfirm }: DeletePopupProps) => {
           </button>
         </div>
       </div>
-    </div>
+    </ModalWrapper>
   );
 };
 
