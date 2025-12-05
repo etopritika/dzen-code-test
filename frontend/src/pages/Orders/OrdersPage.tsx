@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { fetchOrders, type Order } from "@/store/ordersSlice";
+import { usePersistedSelectedOrder } from "@/hooks/usePersistedSelectedOrder";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
 import DeletePopup from "./DeletePopup";
@@ -18,6 +19,8 @@ const OrdersPage = () => {
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
+
+  usePersistedSelectedOrder(orders, selectedOrder, setSelectedOrder);
 
   if (loading) {
     return (

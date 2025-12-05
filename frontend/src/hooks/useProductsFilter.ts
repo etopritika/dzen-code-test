@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Product } from "@/store/ordersSlice";
 
 export function useProductsFilter(products: Product[]) {
-  const [selectedType, setSelectedType] = useState("all");
+  const stored = localStorage.getItem("selectedType") ?? "all";
+  const [selectedType, setSelectedType] = useState(stored);
+
+  useEffect(() => {
+    localStorage.setItem("selectedType", selectedType);
+  }, [selectedType]);
 
   const types = ["all", ...Array.from(new Set(products.map((p) => p.type)))];
 
