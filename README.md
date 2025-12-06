@@ -407,6 +407,22 @@ Three pieces of state are persisted in localStorage:
 - **Modal Animations**: Fade-in-down for modals
 - **Component Animations**: Fade-in-right for OrderDetails sidebar
 
+## 🗄️ Database Schema (MySQL Workbench)
+
+A database schema file is included in:
+
+```
+db_schema.sql
+```
+
+You can open this file in **MySQL Workbench** to inspect the proposed relational structure for the system.  
+It contains two tables:
+
+- `orders` — main entity representing order metadata
+- `products` — product records linked to an order by `order_id` (FOREIGN KEY)
+
+The schema reflects how data would be stored in a real database based on the mock data used in this test assignment.
+
 ## 📝 License
 
 ISC
