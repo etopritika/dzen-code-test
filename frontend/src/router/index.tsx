@@ -1,7 +1,11 @@
+import { lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Layout from "@/layout/Layout";
-import OrdersPage from "@/pages/Orders/OrdersPage";
-import ProductsPage from "@/pages/Products/ProductsPage";
+
+const OrdersPage = lazy(() => import("@/pages/Orders/OrdersPage"));
+const ProductsPage = lazy(() => import("@/pages/Products/ProductsPage"));
+const ReportsPage = lazy(() => import("@/pages/Reports/ReportsPage"));
+const MapPage = lazy(() => import("@/pages/Map/MapPage"));
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +23,14 @@ export const router = createBrowserRouter([
       {
         path: "products",
         element: <ProductsPage />,
+      },
+      {
+        path: "reports",
+        element: <ReportsPage />,
+      },
+      {
+        path: "map",
+        element: <MapPage />,
       },
     ],
   },

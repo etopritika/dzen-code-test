@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { fetchOrders, type Order } from "@/store/ordersSlice";
+import { usePersistedSelectedOrder } from "@/hooks/usePersistedSelectedOrder";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
 import DeletePopup from "./DeletePopup";
 
 const OrdersPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const {
     list: orders,
@@ -19,10 +22,14 @@ const OrdersPage = () => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
+  usePersistedSelectedOrder(orders, selectedOrder, setSelectedOrder);
+
   if (loading) {
     return (
       <section className="mt-4 mb-4">
-        <h2 className="mb-4">Orders / {orders.length}</h2>
+        <h2 className="mb-4">
+          {t("orders.title")} / {orders.length}
+        </h2>
         <p>Loading...</p>
       </section>
     );
@@ -31,7 +38,9 @@ const OrdersPage = () => {
   if (error) {
     return (
       <section className="mt-4 mb-4">
-        <h2 className="mb-4">Orders / {orders.length}</h2>
+        <h2 className="mb-4">
+          {t("orders.title")} / {orders.length}
+        </h2>
         <p className="text-danger">{error}</p>
       </section>
     );
@@ -39,7 +48,9 @@ const OrdersPage = () => {
 
   return (
     <section className="mt-4 mb-4">
-      <h2 className="mb-4">Orders / {orders.length}</h2>
+      <h2 className="mb-4">
+        {t("orders.title")} / {orders.length}
+      </h2>
       <div className="row">
         <div className="col-6">
           <OrderList
