@@ -2,14 +2,17 @@ import { useTranslation } from "react-i18next";
 import { formatFullDate } from "@/utils/formatDate";
 import { useLiveClock } from "@/hooks/useLiveClock";
 import { useActiveSessions } from "@/hooks/useActiveSessions";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const TopMenu = () => {
   const { t, i18n } = useTranslation();
   const currentTime = useLiveClock();
   const activeSessions = useActiveSessions();
+  const [lang, setLang] = useLocalStorage<"en" | "ua">("lang", "en");
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === "en" ? "ua" : "en";
+    const newLang = lang === "en" ? "ua" : "en";
+    setLang(newLang);
     i18n.changeLanguage(newLang);
   };
 
@@ -28,7 +31,7 @@ const TopMenu = () => {
           onClick={toggleLanguage}
           title={t("topmenu.language")}
         >
-          {i18n.language.toUpperCase()}
+          {lang.toUpperCase()}
         </button>
       </div>
     </header>

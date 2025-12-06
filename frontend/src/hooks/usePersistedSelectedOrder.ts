@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Order } from "@/store/ordersSlice";
+import { useLocalStorage } from "./useLocalStorage";
 
 export function usePersistedSelectedOrder(
   orders: Order[],
@@ -7,24 +8,26 @@ export function usePersistedSelectedOrder(
   setSelectedOrder: (order: Order | null) => void
 ) {
   const restoredRef = useRef(false);
+  const [savedOrderId, setSavedOrderId] = useLocalStorage<number | null>(
+    "selectedOrderId",
+    null
+  );
 
   useEffect(() => {
     if (selectedOrder) {
-      localStorage.setItem("selectedOrderId", String(selectedOrder.id));
+      setSavedOrderId(selectedOrder.id);
     }
-  }, [selectedOrder]);
+  }, [selectedOrder, setSavedOrderId]);
 
   useEffect(() => {
     if (restoredRef.current) return;
 
-    const saved = localStorage.getItem("selectedOrderId");
-    if (saved && orders.length > 0) {
-      const found = orders.find((o) => o.id === Number(saved));
+    if (savedOrderId && orders.length > 0) {
+      const found = orders.find((o) => o.id === savedOrderId);
       if (found) {
         setSelectedOrder(found);
         restoredRef.current = true;
       }
     }
-  }, [orders, setSelectedOrder]);
+  }, [orders, savedOrderId, setSelectedOrder]);
 }
-

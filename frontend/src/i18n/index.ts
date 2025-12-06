@@ -8,11 +8,15 @@ i18n.use(initReactI18next).init({
     en: { translation: en },
     ua: { translation: ua },
   },
-  lng: "en",
+  lng: JSON.parse(localStorage.getItem("lang") || '"en"'),
   fallbackLng: "en",
   interpolation: {
     escapeValue: false,
   },
+});
+
+i18n.on("languageChanged", (lng) => {
+  localStorage.setItem("lang", JSON.stringify(lng));
 });
 
 export default i18n;
