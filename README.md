@@ -1,0 +1,416 @@
+# Orders Management System
+
+A full-stack Single Page Application (SPA) built with React and Node.js for managing orders, products, and generating reports with real-time features.
+
+## 📋 Project Overview
+
+This is a modern web application that provides:
+
+- **Orders Management**: View, select, and manage orders with detailed product information
+- **Products Catalog**: Browse and filter products by type
+- **Reports Dashboard**: Visualize order data with interactive charts (USD and UAH)
+- **Interactive Map**: Embedded Google Maps for location visualization
+- **Real-time Features**: Live clock and active WebSocket session tracking
+- **Multilingual Support**: English and Ukrainian (EN/UA) with language persistence
+- **Form Validation**: Add product form with React Hook Form + Zod validation
+
+## ✨ Features Summary
+
+### Core Features
+
+- **Orders Management**: Full CRUD-like interface for viewing and managing orders
+- **Products Catalog**: Filterable product list with type-based filtering
+- **Data Visualization**: Recharts-powered charts for USD and UAH order summaries
+- **Google Maps Integration**: Embedded iframe for location display
+- **Real-time Updates**: WebSocket connection for active session tracking
+- **Live Clock**: Real-time clock display in the header
+
+### Junior+ Enhancements
+
+| Feature             | Implementation                                                 | Status |
+| ------------------- | -------------------------------------------------------------- | ------ |
+| **Lazy Loading**    | React.lazy + Suspense for route-based code splitting           | ✅     |
+| **Web Storage**     | localStorage persistence for selectedOrder, selectedType, lang | ✅     |
+| **i18n**            | react-i18next with EN/UA translations                          | ✅     |
+| **Form Validation** | React Hook Form + Zod schema validation                        | ✅     |
+| **Charts**          | Recharts (BarChart, LineChart) for data visualization          | ✅     |
+| **Maps**            | Google Maps iframe integration                                 | ✅     |
+| **WebSocket**       | Socket.io for real-time active sessions count                  | ✅     |
+| **Unit Tests**      | Vitest + React Testing Library                                 | ✅     |
+| **Animations**      | Animate.css for route transitions and UI polish                | ✅     |
+| **Docker**          | Full containerization with docker-compose                      | ✅     |
+
+## 🏗️ Project Structure
+
+```
+.
+├── frontend/                 # React + Vite + TypeScript frontend
+│   ├── src/
+│   │   ├── api/             # Axios client configuration
+│   │   ├── components/      # Reusable UI components
+│   │   ├── hooks/           # Custom React hooks
+│   │   ├── i18n/            # Internationalization resources
+│   │   ├── layout/          # Layout components (TopMenu, Layout)
+│   │   ├── pages/           # Route pages (Orders, Products, Reports, Map)
+│   │   ├── router/          # React Router configuration
+│   │   ├── store/           # Redux Toolkit slices
+│   │   ├── utils/           # Utility functions and helpers
+│   │   └── tests/           # Test setup files
+│   ├── Dockerfile           # Multi-stage build (Vite → Nginx)
+│   ├── nginx.conf           # Nginx configuration for SPA
+│   └── package.json
+│
+├── backend/                 # Node.js + Express + Socket.io backend
+│   ├── server.js            # Express server + WebSocket logic
+│   ├── data.js              # Mock data (orders, products)
+│   ├── Dockerfile           # Node.js production image
+│   └── package.json
+│
+└── docker-compose.yml       # Docker Compose orchestration
+```
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Redux Toolkit** - State management
+- **React Router v6** - Client-side routing
+- **Bootstrap 5** - CSS framework
+- **Bootstrap Icons** - Icon library
+- **Axios** - HTTP client
+- **React Hook Form** - Form management
+- **Zod** - Schema validation
+- **Recharts** - Chart library
+- **i18next / react-i18next** - Internationalization
+- **Socket.io Client** - WebSocket client
+- **Animate.css** - CSS animations
+- **Vitest** - Unit testing framework
+- **React Testing Library** - Component testing
+
+### Backend
+
+- **Node.js 18** - Runtime environment
+- **Express 5** - Web framework
+- **Socket.io** - WebSocket server
+- **CORS** - Cross-origin resource sharing
+
+### DevOps
+
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **Nginx** - Production web server (frontend)
+- **Alpine Linux** - Lightweight base images
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ installed
+- Docker and Docker Compose installed
+- Git installed
+
+### Development Mode
+
+#### Start Backend
+
+```bash
+cd backend
+npm install
+node server.js
+```
+
+Backend runs on `http://localhost:4000`
+
+#### Start Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs on `http://localhost:5173` (Vite default)
+
+### Production Mode (Docker)
+
+#### Build and Run with Docker Compose
+
+```bash
+# Build all containers
+docker compose build
+
+# Start all services
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop all services
+docker compose down
+```
+
+#### Access the Application
+
+- **Frontend**: http://localhost:80
+- **Backend API**: http://localhost:4000
+- **Backend WebSocket**: ws://localhost:4000
+
+## 🐳 Docker Usage
+
+### Build Containers
+
+```bash
+docker compose build
+```
+
+### Run Containers
+
+```bash
+docker compose up          # Foreground mode
+docker compose up -d        # Detached mode (background)
+```
+
+### Stop Containers
+
+```bash
+docker compose down         # Stop and remove containers
+docker compose down -v      # Also remove volumes
+```
+
+### View Logs
+
+```bash
+docker compose logs         # All services
+docker compose logs frontend
+docker compose logs backend
+docker compose logs -f      # Follow mode
+```
+
+### Rebuild After Changes
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
+
+### Ports Used
+
+- **80** - Frontend (Nginx serving React SPA)
+- **4000** - Backend (Express API + WebSocket)
+
+### Container Communication
+
+- Frontend connects to backend via Docker service name: `http://backend:4000`
+- In development, frontend uses: `http://localhost:4000`
+- Docker Compose creates an internal bridge network for inter-container communication
+
+## 📦 Deployment Instructions (VPS)
+
+### Prerequisites on VPS
+
+- Docker and Docker Compose installed
+- Ports 80 and 4000 open in firewall
+- Domain name (optional, for production)
+
+### Deployment Steps
+
+1. **Clone the repository**
+
+```bash
+git clone <repository-url>
+cd <project-directory>
+```
+
+2. **Build and start containers**
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+3. **Verify containers are running**
+
+```bash
+docker compose ps
+```
+
+4. **Check logs for errors**
+
+```bash
+docker compose logs
+```
+
+5. **Configure Nginx reverse proxy (optional, for domain)**
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:80;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /api {
+        proxy_pass http://localhost:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+6. **Set up SSL with Let's Encrypt (optional)**
+
+```bash
+# Install certbot
+sudo apt install certbot python3-certbot-nginx
+
+# Obtain certificate
+sudo certbot --nginx -d yourdomain.com
+```
+
+### Production Considerations
+
+- Use environment variables for API URLs
+- Set up proper logging (Docker logs or external service)
+- Configure backup strategy for data
+- Set up monitoring (health checks, uptime monitoring)
+- Use Docker secrets for sensitive data
+- Configure resource limits in docker-compose.yml
+
+## 🧪 Testing
+
+### Run Frontend Tests
+
+```bash
+cd frontend
+npm test              # Run once
+npm run test:watch    # Watch mode
+```
+
+### Test Coverage
+
+- **Charts utilities**: `src/utils/__tests__/charts.test.ts`
+- **OrderItem component**: `src/pages/Orders/__tests__/OrderItem.test.ts`
+
+## 📚 Architecture Summary
+
+### Frontend Architecture
+
+- **State Management**: Redux Toolkit with async thunks for API calls
+- **Routing**: React Router v6 with lazy-loaded routes
+- **Styling**: Bootstrap 5 utility classes + custom CSS
+- **API Communication**: Axios client with baseURL configuration
+- **Real-time**: Socket.io client for WebSocket connections
+- **Persistence**: localStorage via custom hooks (`useLocalStorage`, `usePersistedSelectedOrder`)
+- **Internationalization**: i18next with JSON resource files
+
+### Backend Architecture
+
+- **REST API**: Express routes for `/orders` and `/products`
+- **WebSocket**: Socket.io server emitting `activeSessions` events
+- **Data**: In-memory mock data (no database)
+- **CORS**: Enabled for all origins (development)
+
+### Data Flow
+
+1. Frontend dispatches Redux thunk (`fetchOrders`, `fetchProducts`)
+2. Axios client sends HTTP request to backend
+3. Backend processes request and returns JSON
+4. Redux slice updates state
+5. React components re-render with new data
+6. WebSocket connection maintains real-time session count
+
+## 🔄 Routing Structure
+
+```
+/ (root)
+├── /orders          → OrdersPage (lazy-loaded)
+├── /products        → ProductsPage (lazy-loaded)
+├── /reports         → ReportsPage (lazy-loaded)
+└── /map             → MapPage (lazy-loaded)
+```
+
+All routes are wrapped in `Layout` component which provides:
+
+- Top menu with clock, sessions, language toggle
+- Side navigation
+- Route transition animations
+
+## 🌐 i18n Logic
+
+- **Languages**: English (en) and Ukrainian (ua)
+- **Storage**: Language preference persisted in localStorage
+- **Resources**: JSON files in `frontend/src/i18n/`
+- **Usage**: `useTranslation()` hook throughout components
+- **Toggle**: Language switcher in TopMenu component
+
+## 💾 Web Storage Persistence
+
+Three pieces of state are persisted in localStorage:
+
+1. **Selected Order** (`selectedOrderId`)
+
+   - Persisted when user selects an order
+   - Restored on page reload
+   - Hook: `usePersistedSelectedOrder`
+
+2. **Product Filter Type** (`selectedType`)
+
+   - Persisted when user changes filter
+   - Restored on page reload
+   - Hook: `useProductsFilter` (uses `useLocalStorage`)
+
+3. **Language Preference** (`lang`)
+   - Persisted when user changes language
+   - Restored on app initialization
+   - Managed by i18next
+
+## 📊 Charts Implementation
+
+- **Library**: Recharts
+- **USD Chart**: BarChart showing USD sum per order
+- **UAH Chart**: LineChart showing aggregated UAH sums by date
+- **Data Processing**: Pure functions in `src/utils/charts.ts`
+  - `buildUSDChartData()` - Maps orders to chart data
+  - `buildUAHChartData()` - Aggregates UAH by date
+- **Testing**: Unit tests for chart data utilities
+
+## 🗺️ Maps Integration
+
+- **Provider**: Google Maps (iframe embed)
+- **Location**: Kharkiv, Ukraine (hardcoded)
+- **Implementation**: Simple iframe in `MapPage` component
+- **Features**: Full-screen map with standard Google Maps controls
+
+## 🧩 Form Validation
+
+- **Library**: React Hook Form + Zod
+- **Form**: Add Product form in Orders page
+- **Validation Rules**:
+  - Title: Required, min 1 character
+  - Type: Required, min 1 character
+  - Price USD: Required, positive number
+- **Error Display**: Inline error messages below fields
+- **i18n**: All validation messages translated
+
+## 🎨 Animations
+
+- **Library**: Animate.css
+- **Route Transitions**: Fade-in animation on route change
+- **Modal Animations**: Fade-in-down for modals
+- **Component Animations**: Fade-in-right for OrderDetails sidebar
+
+## 📝 License
+
+ISC
+
+## 👥 Author
+
+Developed as a full-stack project demonstrating modern web development practices.
