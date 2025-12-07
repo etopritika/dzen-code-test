@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { useAppSelector } from "@/store";
 import type { Product } from "@/store/ordersSlice";
 import { formatShortDate, formatFullDate } from "@/utils/formatDate";
@@ -8,7 +9,10 @@ interface ProductItemProps {
 
 const ProductItem = ({ product }: ProductItemProps) => {
   const orders = useAppSelector((state) => state.orders.list);
-  const order = orders.find((o) => o.id === product.order);
+  const order = useMemo(
+    () => orders.find((o) => o.id === product.order),
+    [orders, product.order]
+  );
 
   const usdPrice = product.price.find((p) => p.symbol === "USD");
   const uahPrice = product.price.find((p) => p.symbol === "UAH");
@@ -54,4 +58,4 @@ const ProductItem = ({ product }: ProductItemProps) => {
   );
 };
 
-export default ProductItem;
+export default memo(ProductItem);

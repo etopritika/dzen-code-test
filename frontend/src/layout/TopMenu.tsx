@@ -10,6 +10,9 @@ const TopMenu = () => {
   const activeSessions = useActiveSessions();
   const [lang, setLang] = useLocalStorage<"en" | "ua">("lang", "en");
 
+  const formattedDate = formatFullDate(currentTime);
+  const formattedTime = currentTime.toLocaleTimeString();
+
   const toggleLanguage = () => {
     const newLang = lang === "en" ? "ua" : "en";
     setLang(newLang);
@@ -25,7 +28,7 @@ const TopMenu = () => {
     <header className="p-3 border-bottom">
       <div className="container d-flex justify-content-end align-items-center gap-3">
         <time dateTime={currentTime.toISOString()}>
-          {formatFullDate(currentTime)} {currentTime.toLocaleTimeString()}
+          {formattedDate} {formattedTime}
         </time>
         <span>
           {t("topmenu.sessions")}: {activeSessions}

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchProducts } from "@/store/productsSlice";
 import { fetchOrders } from "@/store/ordersSlice";
 import { useProductsFilter } from "@/hooks/useProductsFilter";
-import ProductList from "./ProductList";
+import VirtualizedProductList from "./VirtualizedProductList";
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -17,6 +17,10 @@ const ProductsPage = () => {
 
   const { selectedType, setSelectedType, types, filteredProducts } =
     useProductsFilter(products);
+
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
+  };
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -54,7 +58,7 @@ const ProductsPage = () => {
           className="form-select"
           style={{ maxWidth: "300px" }}
           value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
+          onChange={handleTypeChange}
         >
           {types.map((type) => (
             <option key={type} value={type}>
@@ -63,7 +67,7 @@ const ProductsPage = () => {
           ))}
         </select>
       </div>
-      <ProductList products={filteredProducts} />
+      <VirtualizedProductList products={filteredProducts} />
     </section>
   );
 };
