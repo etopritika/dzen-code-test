@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { fetchProducts } from "@/store/productsSlice";
 import { fetchOrders } from "@/store/ordersSlice";
 import { useProductsFilter } from "@/hooks/useProductsFilter";
-import ProductList from "./ProductList";
+import VirtualizedProductList from "./VirtualizedProductList";
 
 const ProductsPage = () => {
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ const ProductsPage = () => {
           ))}
         </select>
       </div>
-      <ProductList products={filteredProducts} />
+      <VirtualizedProductList products={filteredProducts} />
     </section>
   );
 };

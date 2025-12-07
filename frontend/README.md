@@ -359,14 +359,14 @@ frontend/
 │   │   │   ├── DeletePopup.tsx    # Delete confirmation modal
 │   │   │   ├── OrderDetails.tsx   # Order details sidebar
 │   │   │   ├── OrderItem.tsx      # Order card component
-│   │   │   ├── OrderList.tsx      # Orders list container
 │   │   │   ├── OrdersPage.tsx     # Main orders page
-│   │   │   └── ProductRow.tsx     # Product row in order details
+│   │   │   ├── ProductRow.tsx     # Product row in order details
+│   │   │   └── VirtualizedOrderList.tsx  # Virtualized orders list component
 │   │   │
 │   │   ├── Products/
 │   │   │   ├── ProductItem.tsx    # Product card component
-│   │   │   ├── ProductList.tsx    # Products list container
-│   │   │   └── ProductsPage.tsx   # Main products page
+│   │   │   ├── ProductsPage.tsx   # Main products page
+│   │   │   └── VirtualizedProductList.tsx # Virtualized products list component
 │   │   │
 │   │   └── Reports/
 │   │       ├── ReportsPage.tsx     # Reports page container
@@ -630,6 +630,14 @@ The application implements advanced performance optimizations with focus on scal
 - **Scalable Performance**: Optimizations designed for 10,000+ items
 - **Stable References**: Memoized callbacks prevent child component re-renders
 - **Better Performance**: Especially noticeable with large lists (1,000+ items)
+
+### List Virtualization
+
+- **VirtualizedOrderList**: Uses `react-virtuoso` to virtualize order list rendering, rendering only visible items for optimal performance with large datasets
+- **VirtualizedProductList**: Uses `react-virtuoso` to virtualize product list rendering, ensuring smooth scrolling and efficient memory usage
+- **OrderDetails**: Product list in order details sidebar is also virtualized using `react-virtuoso` for efficient rendering when displaying products within an order
+- All virtualized components maintain stable keys using `computeItemKey` with item IDs
+- Virtualization is transparent and works seamlessly with existing item components and their memoization
 
 ### Best Practices Applied
 

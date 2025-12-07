@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { fetchOrders, type Order } from "@/store/ordersSlice";
 import { usePersistedSelectedOrder } from "@/hooks/usePersistedSelectedOrder";
-import OrderList from "./OrderList";
+import VirtualizedOrderList from "./VirtualizedOrderList";
 import OrderDetails from "./OrderDetails";
 import DeletePopup from "./DeletePopup";
 
@@ -73,7 +73,7 @@ const OrdersPage = () => {
       </h2>
       <div className="row">
         <div className="col-6">
-          <OrderList
+          <VirtualizedOrderList
             orders={orders}
             onSelect={handleSelect}
             onDelete={handleDelete}

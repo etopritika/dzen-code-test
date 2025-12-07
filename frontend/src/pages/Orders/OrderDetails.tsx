@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Virtuoso } from "react-virtuoso";
 import type { Order } from "@/store/ordersSlice";
 import ProductRow from "./ProductRow";
 import AddProductForm from "./AddProductForm";
@@ -22,8 +23,8 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
 
   return (
     <aside
-      className="border-start p-4 animate__animated animate__fadeInRight"
-      style={{ minHeight: "100vh" }}
+      className="border-start p-4 animate__animated animate__fadeInRight d-flex flex-column"
+      style={{ height: "80vh" }}
     >
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="mb-0">{order.title}</h4>
@@ -43,11 +44,16 @@ const OrderDetails = ({ order, onClose }: OrderDetailsProps) => {
         + {t("buttons.addProduct")}
       </button>
 
-      <div>
-        {order.products.map((p) => (
-          <ProductRow key={p.id} product={p} />
-        ))}
-      </div>
+      <Virtuoso
+        data={order.products}
+        totalCount={order.products.length}
+        computeItemKey={(_, product) => product.id}
+        itemContent={(_, product) => (
+          <div className="mb-3">
+            <ProductRow product={product} />
+          </div>
+        )}
+      />
 
       {isAddProductOpen && (
         <AddProductForm onClose={() => setIsAddProductOpen(false)} />
