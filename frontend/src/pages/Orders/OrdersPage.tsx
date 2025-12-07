@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector, type RootState } from "@/store";
 import { fetchOrders, type Order } from "@/store/ordersSlice";
@@ -23,6 +23,26 @@ const OrdersPage = () => {
   }, [dispatch]);
 
   usePersistedSelectedOrder(orders, selectedOrder, setSelectedOrder);
+
+  const handleSelect = useCallback((order: Order) => {
+    setSelectedOrder(order);
+  }, []);
+
+  const handleDelete = useCallback((order: Order) => {
+    setOrderToDelete(order);
+  }, []);
+
+  const handleCloseDetails = useCallback(() => {
+    setSelectedOrder(null);
+  }, []);
+
+  const handleCancelDelete = useCallback(() => {
+    setOrderToDelete(null);
+  }, []);
+
+  const handleConfirmDelete = useCallback(() => {
+    setOrderToDelete(null);
+  }, []);
 
   if (loading) {
     return (
@@ -55,25 +75,19 @@ const OrdersPage = () => {
         <div className="col-6">
           <OrderList
             orders={orders}
-            onSelect={setSelectedOrder}
-            onDelete={(order) => setOrderToDelete(order)}
+            onSelect={handleSelect}
+            onDelete={handleDelete}
           />
         </div>
         <div className="col-6">
-          <OrderDetails
-            order={selectedOrder}
-            onClose={() => setSelectedOrder(null)}
-          />
+          <OrderDetails order={selectedOrder} onClose={handleCloseDetails} />
         </div>
       </div>
       {orderToDelete && (
         <DeletePopup
           order={orderToDelete}
-          onCancel={() => setOrderToDelete(null)}
-          onConfirm={() => {
-            // no real delete logic required
-            setOrderToDelete(null);
-          }}
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
         />
       )}
     </section>

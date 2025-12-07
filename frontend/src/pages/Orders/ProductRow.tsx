@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { Product } from "@/store/ordersSlice";
 
 interface ProductRowProps {
@@ -33,4 +34,4 @@ const ProductRow = ({ product }: ProductRowProps) => {
   );
 };
 
-export default ProductRow;
+export default memo(ProductRow);

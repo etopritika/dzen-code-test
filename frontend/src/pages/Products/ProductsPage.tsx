@@ -18,6 +18,10 @@ const ProductsPage = () => {
   const { selectedType, setSelectedType, types, filteredProducts } =
     useProductsFilter(products);
 
+  const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(e.target.value);
+  };
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
@@ -54,7 +58,7 @@ const ProductsPage = () => {
           className="form-select"
           style={{ maxWidth: "300px" }}
           value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
+          onChange={handleTypeChange}
         >
           {types.map((type) => (
             <option key={type} value={type}>

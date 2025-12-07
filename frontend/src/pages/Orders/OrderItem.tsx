@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import type { Order } from "@/store/ordersSlice";
 import { getProductsCount, getSumUSD, getSumUAH } from "@/utils/orderHelpers";
 import { formatShortDate, formatFullDate } from "@/utils/formatDate";
@@ -10,8 +11,8 @@ interface OrderItemProps {
 
 const OrderItem = ({ order, onSelect, onDelete }: OrderItemProps) => {
   const productCount = getProductsCount(order);
-  const sumUSD = getSumUSD(order);
-  const sumUAH = getSumUAH(order);
+  const sumUSD = useMemo(() => getSumUSD(order), [order]);
+  const sumUAH = useMemo(() => getSumUAH(order), [order]);
   const shortDate = formatShortDate(order.date);
   const fullDate = formatFullDate(order.date);
 
@@ -69,4 +70,4 @@ const OrderItem = ({ order, onSelect, onDelete }: OrderItemProps) => {
   );
 };
 
-export default OrderItem;
+export default memo(OrderItem);

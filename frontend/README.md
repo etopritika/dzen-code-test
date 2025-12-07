@@ -591,6 +591,53 @@ test: {
 - **Animate.css**: CSS animations
 - **Custom CSS**: `src/index.css` for global styles
 
+## ⚡ Performance Optimizations
+
+The application implements advanced performance optimizations with focus on scalability for large datasets (10,000+ items):
+
+### Component Memoization
+
+- **OrderItem**: Wrapped in `React.memo` to prevent unnecessary re-renders when props are stable
+- **ProductItem**: Wrapped in `React.memo` to prevent re-renders with stable props
+- **ProductRow**: Wrapped in `React.memo` to prevent re-renders with stable props
+- **UAHChart & USDChart**: Wrapped in `React.memo` to prevent re-renders when orders data hasn't changed
+
+### Computed Values Memoization
+
+**useMemo** is applied only to expensive O(n) operations that scale with data size:
+
+- **OrderItem**: Sums (USD/UAH) - `reduce` operations over products array
+- **ProductItem**: Order lookup - `find` operation over orders array
+- **useProductsFilter**: Types extraction - `map` over products array
+- **useProductsFilter**: Filtered products - `filter` over products array
+- **USDChart**: Chart data processing - aggregation over orders
+- **UAHChart**: Chart data processing - aggregation over orders
+
+**Note**: Trivial operations (O(1)) like date formatting, simple property access (`length`), and small array lookups (2-3 elements) are intentionally not memoized to avoid overhead.
+
+### Callback Memoization
+
+**useCallback** is applied only when callbacks are passed to memoized child components:
+
+- **OrdersPage**: `handleSelect`, `handleDelete`, `handleCloseDetails`, `handleCancelDelete`, `handleConfirmDelete` are memoized with `useCallback`
+
+**Note**: Callbacks used only in HTML event handlers (like `handleTypeChange` in ProductsPage, `handleClick` in OrderItem, or buttons in TopMenu) don't need memoization since they're not passed to React components.
+
+### Benefits
+
+- **Reduced Re-renders**: Components only re-render when their props actually change
+- **Optimized Calculations**: Expensive O(n) computations are cached
+- **Scalable Performance**: Optimizations designed for 10,000+ items
+- **Stable References**: Memoized callbacks prevent child component re-renders
+- **Better Performance**: Especially noticeable with large lists (1,000+ items)
+
+### Best Practices Applied
+
+- Memoization applied selectively where it provides real benefit
+- No over-optimization - trivial computations (O(1)) left as-is
+- Focus on scalability - all O(n) operations are memoized
+- All optimizations maintain existing functionality and behavior
+
 ## 📝 Notes
 
 - All routes are lazy-loaded for optimal performance
