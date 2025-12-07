@@ -30,6 +30,46 @@ The application will be available at `http://localhost:5173` (Vite default port)
 - TypeScript type checking
 - ESLint for code quality
 
+## 🚀 Render Deployment
+
+### Prerequisites
+
+- Backend service deployed on Render (or another hosting platform)
+- Backend service URL (e.g., `https://dzen-code-test.onrender.com`)
+
+### Environment Configuration
+
+1. **Set Environment Variable in Render Dashboard**:
+   - Navigate to your frontend service settings in Render
+   - Go to "Environment" section
+   - Add environment variable:
+     ```
+     VITE_API_URL=https://your-backend-service.onrender.com
+     ```
+   - Replace `https://your-backend-service.onrender.com` with your actual backend URL
+
+2. **Example Configuration**:
+   ```
+   VITE_API_URL=https://dzen-code-test.onrender.com
+   ```
+
+### How It Works
+
+- The frontend automatically uses `VITE_API_URL` for all API requests (axios) and WebSocket connections (socket.io)
+- If `VITE_API_URL` is not set, it defaults to `http://localhost:4000` for local development
+- The environment variable is embedded at build time by Vite
+- Both HTTP and WebSocket connections use the same backend URL
+
+### Verification
+
+After deployment, verify that:
+
+- API requests are sent to your Render backend URL
+- WebSocket connections establish successfully
+- Active sessions counter works correctly
+
+**Note**: Make sure your backend service on Render has CORS configured to allow requests from your frontend domain.
+
 ## 🏗️ Build Instructions
 
 ### Production Build
@@ -236,7 +276,7 @@ const full = formatFullDate(order.date); // "29 Jun 2017"
 
 **Implementation**:
 
-- Connects to `http://localhost:4000` (development)
+- Connects to backend via `VITE_API_URL` environment variable (defaults to `http://localhost:4000` in development)
 - Listens for `activeSessions` event
 - Updates count in TopMenu component
 - Auto-disconnects on unmount
@@ -406,6 +446,14 @@ frontend/
 
 ## 🔌 API baseURL Expectations
 
+The frontend uses environment variables to configure the backend API URL, allowing seamless switching between development, Docker, and production environments.
+
+**Configuration**: `src/api/axiosClient.ts`
+
+```tsx
+baseURL: import.meta.env.VITE_API_URL || "http://localhost:4000";
+```
+
 ### Development Mode
 
 The frontend expects the backend API at:
@@ -414,10 +462,10 @@ The frontend expects the backend API at:
 http://localhost:4000
 ```
 
-**Configuration**: `src/api/axiosClient.ts`
+**Configuration**: Create `frontend/.env` file (optional, defaults to localhost):
 
-```tsx
-baseURL: "http://localhost:4000";
+```env
+VITE_API_URL=http://localhost:4000
 ```
 
 ### Docker Mode
@@ -428,13 +476,33 @@ When running in Docker, the frontend connects to backend via service name:
 http://backend:4000
 ```
 
-**Configuration**: `src/api/axiosClient.ts` (updated for Docker)
+**Configuration**: Set `VITE_API_URL` environment variable in Docker:
 
-```tsx
-baseURL: "http://backend:4000";
+```env
+VITE_API_URL=http://backend:4000
 ```
 
-**Note**: The baseURL should be changed based on the environment. Consider using environment variables for production deployments.
+### Production (Render Deployment)
+
+For Render deployment, set the `VITE_API_URL` environment variable in the Render dashboard to your backend service URL.
+
+**Configuration**: In Render dashboard, add environment variable:
+
+```
+VITE_API_URL=https://your-backend-service.onrender.com
+```
+
+**Example**: If your backend is deployed at `https://dzen-code-test.onrender.com`, set:
+
+```
+VITE_API_URL=https://dzen-code-test.onrender.com
+```
+
+**Note**:
+
+- The environment variable must be set at build time (Vite embeds it during `npm run build`)
+- Both HTTP requests (via axios) and WebSocket connections (via socket.io) automatically use this URL
+- No code changes needed - just set the environment variable in Render
 
 ## 🔐 JWT Authentication
 
@@ -564,16 +632,50 @@ test: {
 }
 ```
 
-## 📦 Scripts
+## 📦 Scripts (Task Runners)
 
-| Script               | Description              |
-| -------------------- | ------------------------ |
-| `npm run dev`        | Start development server |
-| `npm run build`      | Build production bundle  |
-| `npm run preview`    | Preview production build |
-| `npm run lint`       | Run ESLint               |
-| `npm test`           | Run tests once           |
-| `npm run test:watch` | Run tests in watch mode  |
+**Implementation Level**: Middle
+
+The project implements **Task Runners** using npm scripts as part of the Middle level requirements. All development, build, testing, and deployment tasks are automated through npm scripts defined in `package.json`.
+
+### Available Scripts
+
+| Script               | Description                                 |
+| -------------------- | ------------------------------------------- |
+| `npm run dev`        | Start development server with HMR           |
+| `npm run build`      | Build production bundle (TypeScript + Vite) |
+| `npm run preview`    | Preview production build locally            |
+| `npm run lint`       | Run ESLint for code quality checks          |
+| `npm test`           | Run unit tests once (Vitest)                |
+| `npm run test:watch` | Run tests in watch mode for TDD workflow    |
+
+### Script Details
+
+**Development**:
+
+- `dev`: Starts Vite development server with hot module replacement (HMR), fast refresh, and TypeScript type checking. Server runs on `http://localhost:5173` by default.
+
+**Build**:
+
+- `build`: Compiles TypeScript (`tsc -b`) and builds optimized production bundle with Vite. Outputs to `dist/` directory with code splitting, minification, and asset optimization.
+
+**Preview**:
+
+- `preview`: Serves the production build locally for testing before deployment. Useful for verifying production build behavior.
+
+**Quality Assurance**:
+
+- `lint`: Runs ESLint to check code quality, enforce coding standards, and catch potential errors. Uses ESLint 9 with React-specific rules.
+- `test`: Executes unit tests using Vitest test runner. Runs all test files matching the test pattern once and exits.
+- `test:watch`: Runs tests in watch mode, automatically re-running tests on file changes. Ideal for test-driven development (TDD) workflow.
+
+### Benefits
+
+- **Automation**: All common tasks are automated and easily accessible
+- **Consistency**: Standardized commands across development team
+- **CI/CD Ready**: Scripts can be easily integrated into CI/CD pipelines
+- **Developer Experience**: Simple commands for complex operations
+- **Type Safety**: Build script includes TypeScript compilation step
 
 ## 🔧 Configuration Files
 

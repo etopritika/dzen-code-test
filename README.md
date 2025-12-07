@@ -45,6 +45,7 @@ This is a modern web application that provides:
 | Feature                   | Implementation                                            | Status |
 | ------------------------- | --------------------------------------------------------- | ------ |
 | **Frontend Optimization** | Advanced optimizations (React.memo, useMemo, useCallback) | ✅     |
+| **Task Runners**          | npm scripts for development, build, testing, and linting  | ✅     |
 
 ## 🏗️ Project Structure
 
@@ -480,6 +481,74 @@ The application implements **advanced performance optimizations** to ensure smoo
 - Focus on scalability - all O(n) operations are memoized
 - All optimizations maintain existing functionality
 - Consistent with React performance best practices
+
+## 📦 Task Runners (npm Scripts)
+
+**Implementation Level**: Middle
+
+The project implements **Task Runners** using npm scripts as part of the Middle level requirements. All development, build, testing, and deployment tasks are automated through npm scripts defined in `frontend/package.json`.
+
+### Available Scripts
+
+| Script               | Description                                 |
+| -------------------- | ------------------------------------------- |
+| `npm run dev`        | Start development server with HMR           |
+| `npm run build`      | Build production bundle (TypeScript + Vite) |
+| `npm run preview`    | Preview production build locally            |
+| `npm run lint`       | Run ESLint for code quality checks          |
+| `npm test`           | Run unit tests once (Vitest)                |
+| `npm run test:watch` | Run tests in watch mode for TDD workflow    |
+
+### Script Details
+
+**Development**:
+
+- `dev`: Starts Vite development server with hot module replacement (HMR), fast refresh, and TypeScript type checking. Server runs on `http://localhost:5173` by default.
+
+**Build**:
+
+- `build`: Compiles TypeScript (`tsc -b`) and builds optimized production bundle with Vite. Outputs to `dist/` directory with code splitting, minification, and asset optimization.
+
+**Preview**:
+
+- `preview`: Serves the production build locally for testing before deployment. Useful for verifying production build behavior.
+
+**Quality Assurance**:
+
+- `lint`: Runs ESLint to check code quality, enforce coding standards, and catch potential errors. Uses ESLint 9 with React-specific rules.
+- `test`: Executes unit tests using Vitest test runner. Runs all test files matching the test pattern once and exits.
+- `test:watch`: Runs tests in watch mode, automatically re-running tests on file changes. Ideal for test-driven development (TDD) workflow.
+
+### Benefits
+
+- **Automation**: All common tasks are automated and easily accessible
+- **Consistency**: Standardized commands across development team
+- **CI/CD Ready**: Scripts can be easily integrated into CI/CD pipelines
+- **Developer Experience**: Simple commands for complex operations
+- **Type Safety**: Build script includes TypeScript compilation step
+
+### Usage Examples
+
+```bash
+# Start development server
+cd frontend
+npm run dev
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Check code quality
+npm run lint
+
+# Preview production build
+npm run preview
+```
 
 ## 🔐 JWT Authentication
 
