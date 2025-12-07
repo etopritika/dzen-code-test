@@ -16,6 +16,11 @@ const TopMenu = () => {
     i18n.changeLanguage(newLang);
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
     <header className="p-3 border-bottom">
       <div className="container d-flex justify-content-end align-items-center gap-3">
@@ -32,6 +37,13 @@ const TopMenu = () => {
           title={t("topmenu.language")}
         >
           {lang.toUpperCase()}
+        </button>
+        <button
+          type="button"
+          className="btn btn-sm btn-outline-danger"
+          onClick={logout}
+        >
+          {t("topmenu.logout")}
         </button>
       </div>
     </header>
