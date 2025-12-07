@@ -5,15 +5,18 @@ React + TypeScript + Vite Single Page Application for Orders Management System.
 ## 🚀 Development Startup
 
 ### Prerequisites
+
 - Node.js 18+ installed
 - npm or yarn package manager
 
 ### Installation
+
 ```bash
 npm install
 ```
 
 ### Start Development Server
+
 ```bash
 npm run dev
 ```
@@ -21,6 +24,7 @@ npm run dev
 The application will be available at `http://localhost:5173` (Vite default port).
 
 ### Development Features
+
 - Hot Module Replacement (HMR)
 - Fast refresh for React components
 - TypeScript type checking
@@ -29,16 +33,19 @@ The application will be available at `http://localhost:5173` (Vite default port)
 ## 🏗️ Build Instructions
 
 ### Production Build
+
 ```bash
 npm run build
 ```
 
 This command:
+
 1. Runs TypeScript compilation (`tsc -b`)
 2. Builds optimized production bundle with Vite
 3. Outputs to `dist/` directory
 
 ### Preview Production Build
+
 ```bash
 npm run preview
 ```
@@ -46,8 +53,9 @@ npm run preview
 Serves the production build locally for testing.
 
 ### Build Output
+
 - **Location**: `dist/` directory
-- **Contents**: 
+- **Contents**:
   - `index.html` - Entry HTML file
   - `assets/` - Optimized JS, CSS, and static assets
   - All assets are hashed for cache busting
@@ -57,6 +65,7 @@ Serves the production build locally for testing.
 The frontend uses a **multi-stage build** process:
 
 ### Stage 1: Build (node:18-alpine)
+
 ```dockerfile
 FROM node:18-alpine AS build
 WORKDIR /app
@@ -70,12 +79,14 @@ COPY . .
 RUN npm run build
 ```
 
-**Purpose**: 
+**Purpose**:
+
 - Installs dependencies with `npm ci` (faster, reproducible)
 - Builds the React application using Vite
 - Produces optimized production bundle in `dist/`
 
 ### Stage 2: Run (nginx:stable-alpine)
+
 ```dockerfile
 FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
@@ -86,12 +97,14 @@ CMD ["nginx", "-g", "daemon off;"]
 ```
 
 **Purpose**:
+
 - Uses lightweight Nginx Alpine image
 - Copies built assets from Stage 1
 - Configures Nginx to serve the SPA
 - Handles client-side routing with fallback to `index.html`
 
 **Benefits**:
+
 - Final image is small (~20MB vs ~200MB with Node.js)
 - Fast startup time
 - Production-ready web server
@@ -101,6 +114,7 @@ CMD ["nginx", "-g", "daemon off;"]
 ### Pages
 
 #### Orders Page (`/orders`)
+
 - Displays list of orders in cards
 - Select order to view details in sidebar
 - Delete order functionality (with confirmation modal)
@@ -109,21 +123,32 @@ CMD ["nginx", "-g", "daemon off;"]
 - Computed fields: product count, USD/UAH sums, formatted dates
 
 #### Products Page (`/products`)
+
 - Displays all products in a grid/list
 - Filter by product type (persisted in localStorage)
 - Type filter dropdown with all available types
 - Product details: title, type, serial number, prices
 
 #### Reports Page (`/reports`)
+
 - **USD Chart**: BarChart showing USD sum per order
 - **UAH Chart**: LineChart showing aggregated UAH sums by date
 - Data processed by utility functions (`buildUSDChartData`, `buildUAHChartData`)
 - Charts use Recharts library
 
 #### Map Page (`/map`)
+
 - Embedded Google Maps iframe
 - Centered on Kharkiv, Ukraine
 - Full-width responsive map display
+
+#### Login Page (`/login`)
+
+- Email-based login form
+- React Hook Form + Zod validation
+- Generates mock JWT token
+- Fully internationalized (EN/UA)
+- Redirects to `/orders` after successful login
 
 ### Internationalization (i18n)
 
@@ -132,17 +157,19 @@ CMD ["nginx", "-g", "daemon off;"]
 **Languages**: English (en), Ukrainian (ua)
 
 **Features**:
+
 - Language toggle button in TopMenu
 - Language preference persisted in localStorage
 - All UI text translated (titles, buttons, labels, validation messages)
 - Translation files: `src/i18n/en.json`, `src/i18n/ua.json`
 
 **Usage**:
+
 ```tsx
 import { useTranslation } from "react-i18next";
 
 const { t } = useTranslation();
-<h2>{t("orders.title")}</h2>
+<h2>{t("orders.title")}</h2>;
 ```
 
 ### Formatting Helpers
@@ -150,14 +177,16 @@ const { t } = useTranslation();
 **Location**: `src/utils/formatDate.ts`
 
 **Functions**:
+
 - `formatShortDate(dateString: string)`: Returns "dd / mm" format
 - `formatFullDate(date: Date | string)`: Returns "dd MMM yyyy" format
 
 **Usage**:
+
 ```tsx
 import { formatShortDate, formatFullDate } from "@/utils/formatDate";
 const short = formatShortDate(order.date); // "29 / 06"
-const full = formatFullDate(order.date);   // "29 Jun 2017"
+const full = formatFullDate(order.date); // "29 Jun 2017"
 ```
 
 ### Animate.css Transitions
@@ -165,11 +194,13 @@ const full = formatFullDate(order.date);   // "29 Jun 2017"
 **Library**: Animate.css
 
 **Usage**:
+
 - Route transitions: Fade-in on route change (in `Layout.tsx`)
 - Modal animations: Fade-in-down for modals
 - Component animations: Fade-in-right for OrderDetails sidebar
 
 **Example**:
+
 ```tsx
 <div className="animate__animated animate__fadeIn">
   <Outlet />
@@ -181,12 +212,14 @@ const full = formatFullDate(order.date);   // "29 Jun 2017"
 **Implementation**: React.lazy + Suspense
 
 **Routes Lazy-Loaded**:
+
 - OrdersPage
 - ProductsPage
 - ReportsPage
 - MapPage
 
 **Benefits**:
+
 - Reduced initial bundle size
 - Faster initial page load
 - Code splitting per route
@@ -202,17 +235,19 @@ const full = formatFullDate(order.date);   // "29 Jun 2017"
 **Purpose**: Track active WebSocket connections in real-time
 
 **Implementation**:
+
 - Connects to `http://localhost:4000` (development)
 - Listens for `activeSessions` event
 - Updates count in TopMenu component
 - Auto-disconnects on unmount
 
 **Usage**:
+
 ```tsx
 import { useActiveSessions } from "@/hooks/useActiveSessions";
 
 const activeSessions = useActiveSessions();
-<span>Sessions: {activeSessions}</span>
+<span>Sessions: {activeSessions}</span>;
 ```
 
 ### Form Validation (RHF + Zod)
@@ -222,6 +257,7 @@ const activeSessions = useActiveSessions();
 **Form**: Add Product form in OrderDetails
 
 **Validation Schema**:
+
 ```tsx
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -231,6 +267,7 @@ const schema = z.object({
 ```
 
 **Features**:
+
 - Real-time validation
 - Error messages displayed below fields
 - i18n support for error messages
@@ -241,17 +278,20 @@ const schema = z.object({
 **Custom Hook**: `useLocalStorage<T>(key: string, initialValue: T)`
 
 **Features**:
+
 - Generic type support
 - Automatic JSON serialization/deserialization
 - Error handling with try/catch
 - Syncs with localStorage on every change
 
 **Usage**:
+
 ```tsx
 const [lang, setLang] = useLocalStorage<"en" | "ua">("lang", "en");
 ```
 
 **Persisted State**:
+
 1. **selectedOrderId**: Selected order ID (via `usePersistedSelectedOrder`)
 2. **selectedType**: Product filter type (via `useProductsFilter`)
 3. **lang**: Language preference (via i18next)
@@ -263,11 +303,13 @@ const [lang, setLang] = useLocalStorage<"en" | "ua">("lang", "en");
 **Functions**:
 
 #### `buildUSDChartData(orders: Order[])`
+
 - Maps each order to chart data point
 - Returns: `{ name: string, usd: number }[]`
 - Filters products by `order.id` before calculating sum
 
 #### `buildUAHChartData(orders: Order[])`
+
 - Aggregates UAH sums by date
 - Groups orders by date (short format)
 - Returns: `{ date: string, uah: number }[]`
@@ -304,6 +346,9 @@ frontend/
 │   │   └── TopMenu.tsx            # Header with clock, sessions, lang toggle
 │   │
 │   ├── pages/
+│   │   ├── Auth/
+│   │   │   └── LoginPage.tsx     # JWT login page
+│   │   │
 │   │   ├── Map/
 │   │   │   └── MapPage.tsx        # Google Maps iframe page
 │   │   │
@@ -329,7 +374,8 @@ frontend/
 │   │       └── USDChart.tsx       # USD BarChart component
 │   │
 │   ├── router/
-│   │   └── index.tsx              # React Router configuration
+│   │   ├── index.tsx              # React Router configuration
+│   │   └── ProtectedRoute.tsx     # Route protection component
 │   │
 │   ├── store/
 │   │   ├── index.ts               # Redux store configuration
@@ -361,48 +407,154 @@ frontend/
 ## 🔌 API baseURL Expectations
 
 ### Development Mode
+
 The frontend expects the backend API at:
+
 ```
 http://localhost:4000
 ```
 
 **Configuration**: `src/api/axiosClient.ts`
+
 ```tsx
-baseURL: "http://localhost:4000"
+baseURL: "http://localhost:4000";
 ```
 
 ### Docker Mode
+
 When running in Docker, the frontend connects to backend via service name:
+
 ```
 http://backend:4000
 ```
 
 **Configuration**: `src/api/axiosClient.ts` (updated for Docker)
+
 ```tsx
-baseURL: "http://backend:4000"
+baseURL: "http://backend:4000";
 ```
 
 **Note**: The baseURL should be changed based on the environment. Consider using environment variables for production deployments.
 
+## 🔐 JWT Authentication
+
+### Overview
+
+Mock JWT authentication implemented on the frontend. All routes except `/login` are protected and require a valid token.
+
+### Components
+
+#### `ProtectedRoute.tsx`
+
+- Checks for token in `localStorage`
+- Redirects to `/login` if token is missing
+- Wraps all protected routes in router configuration
+
+**Usage**:
+
+```tsx
+<ProtectedRoute>
+  <Layout />
+</ProtectedRoute>
+```
+
+#### `LoginPage.tsx`
+
+- Email input with validation (Zod schema)
+- Generates mock token: `jwt_{timestamp}`
+- Stores token in `localStorage`
+- Redirects to `/orders` after login
+- Fully internationalized
+
+**Validation**:
+
+- Email: Required, valid email format
+- Error messages translated (EN/UA)
+
+### Axios Interceptor
+
+**File**: `src/api/axiosClient.ts`
+
+Automatically adds JWT token to all HTTP requests:
+
+```typescript
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+```
+
+**How it works**:
+
+1. Every HTTP request goes through the interceptor
+2. Interceptor reads token from `localStorage`
+3. If token exists, adds `Authorization: Bearer {token}` header
+4. Request proceeds with authentication header
+
+**Benefits**:
+
+- No manual token management in components
+- Works for all HTTP methods automatically
+- Centralized authentication logic
+
+### Logout
+
+- Logout button in `TopMenu` component
+- Removes token from `localStorage`
+- Redirects to `/login` using `window.location.href`
+- Fully internationalized
+
+### Token Storage
+
+- **Key**: `"token"`
+- **Format**: `jwt_{timestamp}` (e.g., `jwt_1701234567890`)
+- **Location**: `localStorage`
+- **Lifetime**: Until user logs out or clears browser storage
+
+### Route Protection Flow
+
+```
+User accesses /orders
+    ↓
+ProtectedRoute checks localStorage.getItem("token")
+    ↓
+Token exists? → YES → Render protected content
+    ↓
+Token exists? → NO → <Navigate to="/login" />
+```
+
+### Security Notes
+
+- **Mock Implementation**: This is a frontend-only mock authentication
+- **No Backend Validation**: Backend does not validate tokens
+- **Production**: Implement proper JWT validation on backend
+- **Token Storage**: Consider `httpOnly` cookies for production
+
 ## 🧪 Testing
 
 ### Test Framework
+
 - **Vitest**: Fast unit test runner
 - **React Testing Library**: Component testing utilities
 - **JSDOM**: DOM environment for tests
 
 ### Run Tests
+
 ```bash
 npm test              # Run once
 npm run test:watch    # Watch mode
 ```
 
 ### Test Files
+
 - `src/utils/__tests__/charts.test.ts` - Chart data utilities
 - `src/pages/Orders/__tests__/OrderItem.test.tsx` - OrderItem component
 
 ### Test Configuration
+
 Located in `vite.config.ts`:
+
 ```ts
 test: {
   environment: "jsdom",
@@ -414,14 +566,14 @@ test: {
 
 ## 📦 Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build production bundle |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run tests once |
-| `npm run test:watch` | Run tests in watch mode |
+| Script               | Description              |
+| -------------------- | ------------------------ |
+| `npm run dev`        | Start development server |
+| `npm run build`      | Build production bundle  |
+| `npm run preview`    | Preview production build |
+| `npm run lint`       | Run ESLint               |
+| `npm test`           | Run tests once           |
+| `npm run test:watch` | Run tests in watch mode  |
 
 ## 🔧 Configuration Files
 
