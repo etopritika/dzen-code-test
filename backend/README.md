@@ -406,11 +406,28 @@ const io = new Server(server, {
 ## 📝 Notes
 
 - **No Database**: All data is in-memory (mock data)
-- **No Authentication**: Endpoints are publicly accessible
+- **No Authentication**: Endpoints are publicly accessible (authentication is frontend-only mock JWT)
 - **No Rate Limiting**: Consider adding for production
 - **No Logging**: Basic console.log only
 - **No Error Handling**: Consider adding middleware for production
 - **Stateless**: No session management (except WebSocket connections)
+
+### Authentication Note
+
+The frontend implements **mock JWT authentication** that:
+
+- Generates tokens on the frontend (`jwt_{timestamp}`)
+- Stores tokens in `localStorage`
+- Adds `Authorization: Bearer {token}` header to all requests via Axios interceptor
+
+**Backend does NOT validate these tokens** - this is a mock implementation for demonstration purposes.
+
+For production, implement proper JWT validation on the backend:
+
+- Validate token signature
+- Check token expiration
+- Verify token claims
+- Return 401 Unauthorized for invalid tokens
 
 ## 🚀 Production Considerations
 
@@ -420,7 +437,7 @@ const io = new Server(server, {
 4. **Rate Limiting**: Add rate limiting middleware
 5. **Health Checks**: Add `/health` endpoint
 6. **Database**: Replace mock data with real database
-7. **Authentication**: Add JWT or session-based auth
+7. **Authentication**: Implement proper JWT validation (currently frontend-only mock)
 8. **Validation**: Add request validation (Joi, Zod)
 9. **Monitoring**: Add monitoring and metrics
 10. **SSL/TLS**: Use HTTPS in production

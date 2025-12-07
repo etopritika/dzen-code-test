@@ -13,6 +13,7 @@ This is a modern web application that provides:
 - **Real-time Features**: Live clock and active WebSocket session tracking
 - **Multilingual Support**: English and Ukrainian (EN/UA) with language persistence
 - **Form Validation**: Add product form with React Hook Form + Zod validation
+- **JWT Authentication**: Mock JWT-based authentication with protected routes
 
 ## ✨ Features Summary
 
@@ -39,6 +40,7 @@ This is a modern web application that provides:
 | **Unit Tests**      | Vitest + React Testing Library                                 | ✅     |
 | **Animations**      | Animate.css for route transitions and UI polish                | ✅     |
 | **Docker**          | Full containerization with docker-compose                      | ✅     |
+| **JWT Auth**        | Mock JWT authentication with protected routes                  | ✅     |
 
 ## 🏗️ Project Structure
 
@@ -51,8 +53,8 @@ This is a modern web application that provides:
 │   │   ├── hooks/           # Custom React hooks
 │   │   ├── i18n/            # Internationalization resources
 │   │   ├── layout/          # Layout components (TopMenu, Layout)
-│   │   ├── pages/           # Route pages (Orders, Products, Reports, Map)
-│   │   ├── router/          # React Router configuration
+│   │   ├── pages/           # Route pages (Orders, Products, Reports, Map, Auth)
+│   │   ├── router/          # React Router configuration + ProtectedRoute
 │   │   ├── store/           # Redux Toolkit slices
 │   │   ├── utils/           # Utility functions and helpers
 │   │   └── tests/           # Test setup files
@@ -89,6 +91,7 @@ This is a modern web application that provides:
 - **Animate.css** - CSS animations
 - **Vitest** - Unit testing framework
 - **React Testing Library** - Component testing
+- **JWT (Mock)** - Token-based authentication
 
 ### Backend
 
@@ -331,15 +334,23 @@ npm run test:watch    # Watch mode
 
 ```
 / (root)
-├── /orders          → OrdersPage (lazy-loaded)
-├── /products        → ProductsPage (lazy-loaded)
-├── /reports         → ReportsPage (lazy-loaded)
-└── /map             → MapPage (lazy-loaded)
+├── /login           → LoginPage (public, lazy-loaded)
+└── / (protected)    → Layout (requires authentication)
+    ├── /orders      → OrdersPage (lazy-loaded)
+    ├── /products    → ProductsPage (lazy-loaded)
+    ├── /reports     → ReportsPage (lazy-loaded)
+    └── /map         → MapPage (lazy-loaded)
 ```
 
-All routes are wrapped in `Layout` component which provides:
+**Route Protection**:
 
-- Top menu with clock, sessions, language toggle
+- All routes except `/login` are protected by `ProtectedRoute` component
+- Unauthenticated users are redirected to `/login`
+- Token is stored in `localStorage` and checked on route access
+
+All protected routes are wrapped in `Layout` component which provides:
+
+- Top menu with clock, sessions, language toggle, logout button
 - Side navigation
 - Route transition animations
 
@@ -406,6 +417,78 @@ Three pieces of state are persisted in localStorage:
 - **Route Transitions**: Fade-in animation on route change
 - **Modal Animations**: Fade-in-down for modals
 - **Component Animations**: Fade-in-right for OrderDetails sidebar
+
+## 🔐 JWT Authentication
+
+### Implementation
+
+- **Type**: Mock JWT authentication (frontend-only)
+- **Token Format**: `jwt_{timestamp}` (e.g., `jwt_1234567890`)
+- **Storage**: Token stored in `localStorage` with key `"token"`
+- **Protection**: All routes except `/login` require valid token
+
+### Components
+
+#### `ProtectedRoute.tsx`
+
+- Wrapper component that checks for token in `localStorage`
+- Redirects to `/login` if token is missing
+- Uses React Router's `Navigate` component
+
+#### `LoginPage.tsx`
+
+- Login form with email validation (React Hook Form + Zod)
+- Generates mock JWT token on successful login
+- Stores token in `localStorage`
+- Redirects to `/orders` after login
+- Fully internationalized (EN/UA)
+
+### Axios Interceptor
+
+**File**: `src/api/axiosClient.ts`
+
+Automatically adds JWT token to all HTTP requests:
+
+```typescript
+axiosClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+```
+
+**Benefits**:
+
+- No need to manually add token to each request
+- Works for all HTTP methods (GET, POST, PUT, DELETE)
+- Centralized authentication logic
+
+### Logout
+
+- Logout button in `TopMenu` component
+- Removes token from `localStorage`
+- Redirects to `/login` page
+- Fully internationalized
+
+### Flow
+
+1. **Unauthenticated User**:
+
+   - Accesses any protected route → Redirected to `/login`
+   - Enters email → Token generated → Stored in `localStorage`
+   - Redirected to `/orders`
+
+2. **Authenticated User**:
+   - All HTTP requests include `Authorization: Bearer {token}` header
+   - Can access all protected routes
+   - Logout removes token and redirects to login
+
+### Security Notes
+
+- **Mock Implementation**: This is a frontend-only mock authentication
+- **No Backend Validation**: Backend does not validate tokens (mock implementation)
+- **Production**: For production, implement proper JWT validation on backend
+- **Token Storage**: Consider using `httpOnly` cookies for production (more secure)
 
 ## 🗄️ Database Schema (MySQL Workbench)
 

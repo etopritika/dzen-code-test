@@ -2,7 +2,8 @@
   "topmenu": {
     "sessions": "Активні сесії",
     "time": "Час",
-    "language": "Мова"
+    "language": "Мова",
+    "logout": "Вийти"
   },
   "orders": {
     "title": "Приходи"
@@ -40,5 +41,16 @@
   },
   "map": {
     "title": "Карта"
+  },
+  "login": {
+    "title": "Вхід",
+    "fields": {
+      "email": "Електронна пошта"
+    },
+    "submit": "Увійти",
+    "validation": {
+      "emailRequired": "Електронна пошта обов'язкова",
+      "emailInvalid": "Невірний формат електронної пошти"
+    }
   }
 }

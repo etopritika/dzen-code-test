@@ -2,7 +2,8 @@
   "topmenu": {
     "sessions": "Active sessions",
     "time": "Time",
-    "language": "Language"
+    "language": "Language",
+    "logout": "Logout"
   },
   "orders": {
     "title": "Orders"
@@ -40,5 +41,16 @@
   },
   "map": {
     "title": "Map"
+  },
+  "login": {
+    "title": "Login",
+    "fields": {
+      "email": "Email"
+    },
+    "submit": "Login",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format"
+    }
   }
 }
