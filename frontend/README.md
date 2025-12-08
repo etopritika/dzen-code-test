@@ -26,7 +26,7 @@ Builds optimized production bundle to `dist/` directory.
 Set `VITE_API_URL` environment variable in Render dashboard:
 
 ```
-VITE_API_URL=https://your-backend-service.onrender.com
+VITE_API_URL=https://dzen-code-test.onrender.com
 ```
 
 **Important**: This variable must be set at build time. Vite embeds it into static files during `npm run build`. Render automatically passes it as Docker build argument.

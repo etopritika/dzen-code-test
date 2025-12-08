@@ -4,8 +4,8 @@ A full-stack Single Page Application (SPA) built with React and Node.js for mana
 
 ## 🚀 Live Deployment
 
-- **Frontend**: [Render Deployment URL]
-- **Backend**: [Render Deployment URL]
+- **Frontend**: https://dzen-code-test-1.onrender.com
+- **Backend**: https://dzen-code-test.onrender.com
 
 ## 📋 Project Overview
 
@@ -62,7 +62,7 @@ Modern web application providing orders management, products catalog, interactiv
 
 ```bash
 # Backend
-cd backend && npm install && node server.js
+cd backend && npm install && npm start
 # Runs on http://localhost:4000
 
 # Frontend
@@ -95,7 +95,7 @@ Access:
 1. Create Web Service on Render
 2. Connect GitHub repository
 3. Set Dockerfile path: `frontend/Dockerfile`
-4. Add environment variable: `VITE_API_URL=https://your-backend.onrender.com`
+4. Add environment variable: `VITE_API_URL=https://dzen-code-test.onrender.com`
 5. Deploy
 
 Render automatically passes `VITE_API_URL` as build argument during Docker build.
