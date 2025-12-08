@@ -12,6 +12,8 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:4000}
     container_name: dzen-frontend
     ports:
       - "80:80"
